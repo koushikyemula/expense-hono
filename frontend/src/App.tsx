@@ -1,14 +1,20 @@
 import { useState } from "react";
 import { Button } from "./components/ui/button";
 import { useEffect } from "node_modules/@types/react/ts5.0";
+import { api } from "./lib/api";
 
 function App() {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
-    fetch("/api/total-spent")
-      .then((res) => res.json())
-      .then((data) => setTotalAmount(data.total));
+    const fetchTotalAmount = async () => {
+      const res = await api.expenses["total-spent"].$get();
+      const data = await res.json();
+
+      setTotalAmount(data.total);
+    };
+
+    fetchTotalAmount();
   }, [totalAmount]);
   return (
     <>
